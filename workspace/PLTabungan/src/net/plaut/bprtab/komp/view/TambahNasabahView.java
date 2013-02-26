@@ -46,7 +46,7 @@ public class TambahNasabahView extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public TambahNasabahView() {
-		setFrameIcon(new ImageIcon(TambahNasabahView.class.getResource("/net/plaut/bprtab/resources/Nasabah.png")));
+		setFrameIcon(new ImageIcon(TambahNasabahView.class.getResource("/net/plaut/bprtab/resources/TambahNasabah.png")));
 		getContentPane().setBackground(new Color(255, 250, 205));
 		setBackground(SystemColor.activeCaption);
 		getContentPane().setFont(new Font("Arial", Font.PLAIN, 15));

@@ -282,8 +282,6 @@ public class MainFrame extends JFrame {
 //				logout();
 				showLogoutView(e);
 			}
-
-			
 		});
 		
 		btLogoutTeller.addActionListener(new ActionListener() {
@@ -305,6 +303,12 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
+		btHapusNasabah.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showHapusNasabahForm(e);
+			}
+		});
+		
 		btTambahUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showAddUserForm(e);
@@ -317,15 +321,33 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
+		btHapusUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showHapusUserForm(e);
+			}
+		});
+		
 		btPenyetoran.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showSetorTabunganView(e);
 			}
 		});
 		
+		btBatalSetor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showBatalSetorTabunganView(e);
+			}
+		});
+		
 		btPenarikan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showTarikTabunganView(e);
+			}
+		});
+		
+		btBatalTarik.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showBatalTarikTabunganView(e);
 			}
 		});
 	}
@@ -437,6 +459,14 @@ public class MainFrame extends JFrame {
         ubahNasabah.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
 	}
 	
+	private void showHapusNasabahForm(ActionEvent e){
+		HapusNasabahView hapusNasabah = new HapusNasabahView();
+		mainDesktopPane.add(hapusNasabah);
+		Dimension desktopSize = mainDesktopPane.getSize();
+        Dimension childSize = hapusNasabah.getSize();
+        hapusNasabah.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
+	}
+	
 	private void showAddUserForm(ActionEvent e){
 		TambahUserView tambahUser = new TambahUserView();
 		mainDesktopPane.add(tambahUser);
@@ -453,6 +483,14 @@ public class MainFrame extends JFrame {
         ubahUser.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
 	}
 	
+	private void showHapusUserForm(ActionEvent e){
+		HapusUserView hapusUser = new HapusUserView();
+		mainDesktopPane.add(hapusUser);
+		Dimension desktopSize = mainDesktopPane.getSize();
+        Dimension childSize = hapusUser.getSize();
+        hapusUser.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
+	}
+	
 	private void showSetorTabunganView(ActionEvent e){
 		SetorTabunganView setorTabungan = new SetorTabunganView();
 		mainDesktopPane.add(setorTabungan);
@@ -461,12 +499,28 @@ public class MainFrame extends JFrame {
         setorTabungan.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
 	}
 	
+	private void showBatalSetorTabunganView(ActionEvent e){
+		BatalSetorTabunganView batalsetorTabungan = new BatalSetorTabunganView();
+		mainDesktopPane.add(batalsetorTabungan);
+		Dimension desktopSize = mainDesktopPane.getSize();
+        Dimension childSize = batalsetorTabungan.getSize();
+        batalsetorTabungan.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
+	}
+	
 	private void showTarikTabunganView(ActionEvent e){
 		TarikTabunganView tarikTabungan = new TarikTabunganView();
 		mainDesktopPane.add(tarikTabungan);
 		Dimension desktopSize = mainDesktopPane.getSize();
         Dimension childSize = tarikTabungan.getSize();
         tarikTabungan.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
+	}
+	
+	private void showBatalTarikTabunganView(ActionEvent e){
+		BatalTarikTabunganView bataltarikTabungan = new BatalTarikTabunganView();
+		mainDesktopPane.add(bataltarikTabungan);
+		Dimension desktopSize = mainDesktopPane.getSize();
+        Dimension childSize = bataltarikTabungan.getSize();
+        bataltarikTabungan.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
 	}
 	
 	private void showLoginView(ActionEvent e){

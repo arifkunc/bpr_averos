@@ -32,6 +32,7 @@ import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.StringUtil;
 import net.plaut.component.PComboBoxLoad;
 import net.plaut.dbutil.db.DbConnection;
+import javax.swing.ImageIcon;
 
 public class UbahUserView extends JInternalFrame {
 	private JTextField tfUserName;
