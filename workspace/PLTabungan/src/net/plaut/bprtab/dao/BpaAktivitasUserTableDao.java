@@ -12,9 +12,11 @@ import net.plaut.dbutil.object.SqlCondition;
 
 public class BpaAktivitasUserTableDao extends TableDao<BpaAktivitasUserTableRecord> {
 
+	public final static String TABLE_NAME = "BPA_AKTIVITAS_USER";
+	
 	@Override
 	public String getTableName() {
-		return "BPA_AKTIVITAS_USER";
+		return TABLE_NAME;
 	}
 
 	@Override
@@ -163,5 +165,4 @@ public class BpaAktivitasUserTableDao extends TableDao<BpaAktivitasUserTableReco
 
 		return record;
 	}
-	
 }

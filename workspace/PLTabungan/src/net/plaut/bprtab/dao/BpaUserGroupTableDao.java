@@ -11,19 +11,30 @@ import net.plaut.dbutil.object.SqlCondition;
 
 public class BpaUserGroupTableDao extends TableDao<BpaUserGroupTableRecord> {
 
+	public static final String TABLE_NAME = "BPA_USER_GROUP";
+	
 	@Override
 	public String getTableName() {
-		return "BPA_USER_GROUP";
+		return TABLE_NAME;
 	}
 
 	@Override
 	protected SqlCondition createSelectSQLCondition(SearchCondition searchCondition) {
-		BpaUserGroupSrcCond cond = (BpaUserGroupSrcCond) searchCondition;
-		String selectString = "SELECT * FROM "+ getTableName();
-		String whereString="";
 		
-		StringBuilder whereStringBuilder = new StringBuilder();
+		String sqlString;
+		String selectString = "SELECT * FROM "+ getTableName();
 		ArrayList param = new ArrayList();
+		
+		if(searchCondition == null){
+			sqlString = selectString;
+			SqlCondition sqlCond = new SqlCondition(sqlString, param.toArray());
+			return sqlCond;
+		}
+		
+		BpaUserGroupSrcCond cond = (BpaUserGroupSrcCond) searchCondition;
+		String whereString="";
+		StringBuilder whereStringBuilder = new StringBuilder();
+		
 
 		if(cond.getId() != null){
 			if(whereStringBuilder.length() > 0){
@@ -36,7 +47,7 @@ public class BpaUserGroupTableDao extends TableDao<BpaUserGroupTableRecord> {
 		}
 
 		whereString = whereStringBuilder.toString();
-		String sqlString = selectString + whereString;
+		sqlString = selectString + whereString;
 		SqlCondition sqlCond = new SqlCondition(sqlString, param.toArray());
 
 		return sqlCond;

@@ -1,10 +1,17 @@
-package net.plaut.bprtab.dto;
+package net.plaut.bprtab.object;
 
-public class AddUserDto {
+public class UpdateUserDto {
+	private String oldUsername;
 	private String username;
 	private String password;
 	private String groupLevelId;
 	
+	public String getOldUsername() {
+		return oldUsername;
+	}
+	public void setOldUsername(String oldUsername) {
+		this.oldUsername = oldUsername;
+	}
 	public String getUsername() {
 		return username;
 	}

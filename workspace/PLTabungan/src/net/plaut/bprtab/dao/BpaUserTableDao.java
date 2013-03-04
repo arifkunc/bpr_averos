@@ -58,7 +58,7 @@ public class BpaUserTableDao extends TableDao<BpaUserTableRecord>{
 		ArrayList param = new ArrayList();
 		param.add(newRecord.getUsername());
 		param.add(newRecord.getPassword());
-		param.add(newRecord.getGroup());
+		param.add(newRecord.getGroupId());
 		SqlCondition sqlCond = new SqlCondition(insertString, param.toArray());
 		return sqlCond;
 	}
@@ -91,12 +91,12 @@ public class BpaUserTableDao extends TableDao<BpaUserTableRecord>{
 			param.add(updateRecord.getPassword());
 		}
 		
-		if(updateRecord.getGroup() != null){
+		if(updateRecord.getGroupId() != null){
 			if(columnStringBuilder.length()>0){
 				columnStringBuilder.append(",");
 			}
 			columnStringBuilder.append(" GROUP_ID=?");
-			param.add(updateRecord.getGroup());
+			param.add(updateRecord.getGroupId());
 		}
 
 		// for where condition
@@ -148,7 +148,7 @@ public class BpaUserTableDao extends TableDao<BpaUserTableRecord>{
 		BpaUserTableRecord record = new BpaUserTableRecord();
 		record.setUsername(rs.getString("USERNAME"));
 		record.setPassword(rs.getString("PASSWORD"));
-		record.setGroup(rs.getString("GROUP_ID"));
+		record.setGroupId(rs.getString("GROUP_ID"));
 
 		return record;
 	}

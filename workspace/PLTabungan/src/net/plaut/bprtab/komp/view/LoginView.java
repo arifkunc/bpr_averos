@@ -163,7 +163,7 @@ public class LoginView extends JInternalFrame {
 				// login success
 				BpaUserGroupTableDao guDao = new BpaUserGroupTableDao();
 				BpaUserGroupSrcCond userGroupCond = new BpaUserGroupSrcCond();
-				userGroupCond.setId(list.get(0).getGroup());
+				userGroupCond.setId(list.get(0).getGroupId());
 				ArrayList<BpaUserGroupTableRecord> ugList = guDao.executeQuery(con, userGroupCond);
 				String groupId = ugList.get(0).getId();
 				LoginInformation loginInfo = LoginInformation.getInstance();

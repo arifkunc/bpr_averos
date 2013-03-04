@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,10 +22,8 @@ import javax.swing.JTextField;
 import net.plaut.bprtab.dao.BpaUserGroupTableDao;
 import net.plaut.bprtab.dao.BpaUserGroupTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserGroupSrcCond;
-import net.plaut.bprtab.dto.AddUserDto;
-import net.plaut.bprtab.komp.model.TambahUserModel;
 import net.plaut.bprtab.logic.UserLogic;
-import net.plaut.bprtab.util.PairedItemFactory;
+import net.plaut.bprtab.object.AddUserDto;
 import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.StringUtil;
 import net.plaut.component.PComboBoxLoad;
@@ -40,6 +38,10 @@ public class TambahUserView extends JInternalFrame {
 	private JButton btCancel;
 	private Panel panelA;
 	private Panel panelB;
+	
+	private HashMap<String, String> userGroupMap;
+	private String[] userGroupId;
+	private String[] userGroupName;
 
 	/**
 	 * Launch the application.
@@ -72,15 +74,17 @@ public class TambahUserView extends JInternalFrame {
 
 		BpaUserGroupTableDao guDao = new BpaUserGroupTableDao();
 		Connection con;
-		ArrayList<BpaUserGroupTableRecord> listGroupUser;
+		ArrayList<BpaUserGroupTableRecord> userGroupList;
 		try {
 			con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
 			BpaUserGroupSrcCond cond = new BpaUserGroupSrcCond();
-			listGroupUser = guDao.executeQuery(con, cond);
+			userGroupList = guDao.executeQuery(con, cond);
 		} catch (SQLException e) {
-			listGroupUser = new ArrayList<BpaUserGroupTableRecord>();
+			userGroupList = new ArrayList<BpaUserGroupTableRecord>();
 		}
-		List userGroupPairedItems = PairedItemFactory.fromUserGroupTableRecord(listGroupUser);
+		userGroupMap = getUserGroupMap(userGroupList);
+		userGroupId = getUserGroupId(userGroupList);
+		userGroupName = getUserGroupName(userGroupList);
 		
 		getContentPane().setLayout(null);
 		
@@ -89,7 +93,7 @@ public class TambahUserView extends JInternalFrame {
 		
 		panelA.setBounds(10, 10, 363, 171);
 		panelA.setLayout(null);
-		cbGroupLevel = new PComboBoxLoad(userGroupPairedItems);
+		cbGroupLevel = new PComboBoxLoad(userGroupId, userGroupName);
 		panelA.add(cbGroupLevel);
 		cbGroupLevel.setBounds(171, 104, 180, 25);
 		cbGroupLevel.setFont(new Font("Arial", Font.BOLD, 15));
@@ -236,6 +240,42 @@ public class TambahUserView extends JInternalFrame {
 		pfPassword1.setText("");
 		pfPassword2.setText("");
 		cbGroupLevel.setSelectedIndex(-1);
+	}
+	
+	private HashMap<String, String> getUserGroupMap(ArrayList<BpaUserGroupTableRecord> userGroupList){
+		HashMap<String, String> result = new HashMap<String, String>();
+		if(userGroupList == null || userGroupList.isEmpty()){
+			return result;
+		}
+		
+		for(BpaUserGroupTableRecord rec:userGroupList){
+			result.put(rec.getId(), rec.getGroupName());
+		}
+		return result;
+	}
+	
+	private String[] getUserGroupId(ArrayList<BpaUserGroupTableRecord> userGroupList){
+		if(userGroupList == null || userGroupList.isEmpty()){
+			return null;
+		}
+		String[] result = new String[userGroupList.size()];
+		for(int i=0; i< userGroupList.size(); i++){
+			BpaUserGroupTableRecord rec = userGroupList.get(i);
+			result[i] = rec.getId();
+		}
+		return result;
+	}
+	
+	private String[] getUserGroupName(ArrayList<BpaUserGroupTableRecord> userGroupList){
+		if(userGroupList == null || userGroupList.isEmpty()){
+			return null;
+		}
+		String[] result = new String[userGroupList.size()];
+		for(int i=0; i< userGroupList.size(); i++){
+			BpaUserGroupTableRecord rec = userGroupList.get(i);
+			result[i] = rec.getGroupName();
+		}
+		return result;
 	}
 
 }

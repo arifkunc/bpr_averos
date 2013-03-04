@@ -1,54 +1,43 @@
 package net.plaut.component;
 
-import java.util.List;
-
 import javax.swing.JComboBox;
 
 public class PComboBoxLoad extends JComboBox {
-	protected List pairedItems;
+	protected Object[] itemsValue;
+	protected Object[] itemsDisplay;
 	
-	public PComboBoxLoad(List pairedItems){
+	public PComboBoxLoad(Object[] itemsValue, Object[] itemsdisplay){
 		super();
-		this.pairedItems = pairedItems;
+		setItems(itemsValue, itemsdisplay);
 		reloadItems();
 	}
 	
 	public void reloadItems(){
+		if(itemsValue.length != itemsDisplay.length){
+			return;
+		}
 		removeAllItems();
-		for(int i=0; i < pairedItems.size(); i++){
-			PairedItem paireditem = (PairedItem)pairedItems.get(i);
-			addItem(paireditem.getItemDisplay());
+		for(int i=0; i < itemsDisplay.length; i++){
+			addItem(itemsDisplay[i]);
 		}
 	}
 	
 	public Object getSelectedValue(){
 		int i = getSelectedIndex();
-		PairedItem paireditem = (PairedItem)pairedItems.get(i);
-		return paireditem.getItemValue();
+		return itemsValue[i];
 	}
 	
 	public Object getSelectedDisplay(){
 		int i = getSelectedIndex();
-		PairedItem paireditem = (PairedItem)pairedItems.get(i);
-		return paireditem.getItemDisplay();
+		return itemsDisplay[i];
 	}
 	
-	// inner class for storing item data
-	public static class PairedItem{
-		private Object itemValue;
-		private Object itemDisplay;
-		public Object getItemValue() {
-			return itemValue;
+	public void setItems(Object[] itemsValue, Object[] itemsDisplay){
+		if(itemsValue.length != itemsDisplay.length){
+			return;
 		}
-		public void setItemValue(Object itemValue) {
-			this.itemValue = itemValue;
-		}
-		public Object getItemDisplay() {
-			return itemDisplay;
-		}
-		public void setItemDisplay(Object itemDisplay) {
-			this.itemDisplay = itemDisplay;
-		}
+		this.itemsValue = itemsValue;
+		this.itemsDisplay = itemsDisplay;
 	}
 	
 }

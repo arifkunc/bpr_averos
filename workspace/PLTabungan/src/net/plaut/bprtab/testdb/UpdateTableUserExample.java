@@ -49,7 +49,7 @@ public class UpdateTableUserExample {
 			 set nilai yg mau diinsert
 			 */
 			updateRecord.setPassword("taralaku");
-			updateRecord.setGroup(DbConstant.USER_GROUP_TELLER);
+			updateRecord.setGroupId(DbConstant.USER_GROUP_TELLER);
 			
 			/*
 			 lakukan update

@@ -39,7 +39,7 @@ public class InsertTableUserExample {
 			 */
 			record.setUsername("arifganteng4");
 			record.setPassword("pangaruh");
-			record.setGroup(DbConstant.USER_GROUP_SUPER_ADMIN);
+			record.setGroupId(DbConstant.USER_GROUP_SUPER_ADMIN);
 			
 			/*
 			 lakukan insert

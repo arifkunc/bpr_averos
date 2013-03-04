@@ -7,7 +7,8 @@ import java.util.List;
 import net.plaut.bprtab.dao.BpaUserTableDao;
 import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
-import net.plaut.bprtab.dto.AddUserDto;
+import net.plaut.bprtab.object.AddUserDto;
+import net.plaut.bprtab.object.UpdateUserDto;
 import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.dbutil.db.DbConnection;
 
@@ -31,9 +32,23 @@ public class UserLogic {
 		BpaUserTableRecord record = new BpaUserTableRecord();
 		record.setUsername(dto.getUsername());
 		record.setPassword(dto.getPassword());
-		record.setGroup(dto.getGroupLevelId());
+		record.setGroupId(dto.getGroupLevelId());
 		BpaUserTableDao userDao = new BpaUserTableDao();
 		userDao.insert(con, record);
+		con.close();
+	}
+	
+	public void updateUser(UpdateUserDto dto) throws SQLException{
+		Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+
+		BpaUserTableRecord record = new BpaUserTableRecord();
+		record.setUsername(dto.getUsername());
+		record.setPassword(dto.getPassword());
+		record.setGroupId(dto.getGroupLevelId());
+		BpaUserTableDao userDao = new BpaUserTableDao();
+		BpaUserSrcCond cond = new BpaUserSrcCond();
+		cond.setUsername(dto.getOldUsername());
+		userDao.update(con, record, cond);
 		con.close();
 	}
 

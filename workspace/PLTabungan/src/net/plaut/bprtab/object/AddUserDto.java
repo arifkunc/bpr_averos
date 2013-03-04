@@ -1,11 +1,9 @@
-package net.plaut.bprtab.dao;
+package net.plaut.bprtab.object;
 
-import net.plaut.dbutil.dao.TableRecord;
-
-public class BpaUserTableRecord extends TableRecord{
+public class AddUserDto {
 	private String username;
 	private String password;
-	private String groupId;
+	private String groupLevelId;
 	
 	public String getUsername() {
 		return username;
@@ -19,12 +17,11 @@ public class BpaUserTableRecord extends TableRecord{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getGroupId() {
-		return groupId;
+	public String getGroupLevelId() {
+		return groupLevelId;
 	}
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
+	public void setGroupLevelId(String groupLevelId) {
+		this.groupLevelId = groupLevelId;
 	}
-	
 	
 }
