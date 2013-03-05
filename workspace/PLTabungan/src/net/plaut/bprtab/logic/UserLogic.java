@@ -51,6 +51,16 @@ public class UserLogic {
 		userDao.update(con, record, cond);
 		con.close();
 	}
+	
+	public void deleteUser(String username) throws SQLException{
+		Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+
+		BpaUserTableDao userDao = new BpaUserTableDao();
+		BpaUserSrcCond cond = new BpaUserSrcCond();
+		cond.setUsername(username);
+		userDao.delete(con, cond);
+		con.close();
+	}
 
 	public boolean checkUserExist(AddUserDto dto) throws SQLException{
 		Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());

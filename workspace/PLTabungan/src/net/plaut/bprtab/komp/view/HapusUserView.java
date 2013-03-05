@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,7 +24,12 @@ import net.plaut.bprtab.dao.BpaUserGroupTableRecord;
 import net.plaut.bprtab.dao.BpaUserTableDao;
 import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserGroupSrcCond;
+import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.komp.model.TambahUserModel;
+import net.plaut.bprtab.logic.UserLogic;
+import net.plaut.bprtab.object.AddUserDto;
+import net.plaut.bprtab.util.OnMemData;
+import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.StringUtil;
 import net.plaut.dbutil.db.DbConnection;
 import javax.swing.ImageIcon;
@@ -32,10 +38,14 @@ public class HapusUserView extends JInternalFrame {
 	private JTextField tfUserName;
 	private JButton btSave;
 	private JButton btCancel;
+	JButton btFind;
 	private TambahUserModel model;
 	private Panel panel;
 	private Panel panel_1;
 	private JTextField tfGrupLevel;
+	
+	private String selectedUsername;
+	String[] usernameData;
 
 	/**
 	 * Launch the application.
@@ -73,13 +83,15 @@ public class HapusUserView extends JInternalFrame {
 		} catch (SQLException e1) {
 			con = null;
 		}
-		ArrayList<BpaUserGroupTableRecord> listGroupUser;
+		ArrayList<BpaUserGroupTableRecord> userGroupList;
 		try {
 			BpaUserGroupSrcCond cond = new BpaUserGroupSrcCond();
-			listGroupUser = guDao.executeQuery(con, cond);
+			userGroupList = guDao.executeQuery(con, cond);
 		} catch (SQLException e) {
-			listGroupUser = new ArrayList<BpaUserGroupTableRecord>();
+			userGroupList = new ArrayList<BpaUserGroupTableRecord>();
 		}
+		
+		usernameData = OnMemData.getInstance().getUsernameData();
 
 		getContentPane().setLayout(null);
 
@@ -120,17 +132,17 @@ public class HapusUserView extends JInternalFrame {
 		lblLevel.setBounds(10, 40, 99, 24);
 		panel.add(lblLevel);
 		lblLevel.setFont(new Font("Arial", Font.PLAIN, 15));
-		
-		JButton btnNewButton = new JButton("Cari");
-		btnNewButton.setIcon(new ImageIcon(HapusUserView.class.getResource("/net/plaut/bprtab/resources/Cari.png")));
-		btnNewButton.addActionListener(new ActionListener() {
+
+		btFind = new JButton("Cari");
+		btFind.setIcon(new ImageIcon(HapusUserView.class.getResource("/net/plaut/bprtab/resources/Cari.png")));
+		btFind.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnNewButton.setFont(new Font("Arial", Font.BOLD, 15));
-		btnNewButton.setBounds(270, 8, 80, 26);
-		panel.add(btnNewButton);
-		
+		btFind.setFont(new Font("Arial", Font.BOLD, 15));
+		btFind.setBounds(270, 8, 80, 26);
+		panel.add(btFind);
+
 		tfGrupLevel = new JTextField();
 		tfGrupLevel.setFont(new Font("Arial", Font.BOLD, 15));
 		tfGrupLevel.setEnabled(false);
@@ -143,73 +155,69 @@ public class HapusUserView extends JInternalFrame {
 	}
 
 	private void addEvent() {
-//		btSave.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				saveAction(e);
-//			}
-//		});
+		btSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteAction(e);
+			}
+		});
 
 		btCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
+		
+		btFind.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showSelectUsernameDialog();
+			}
+		});
 	}
 
-//	private void saveAction(ActionEvent e) {
-//		if (!isInputValid())
-//			return;
-//		Connection con;
-//		try {
-//			con = DbConnection.createConnection("localhost", "root", "",
-//					"bpr_averos");
-//			model.setUserName(tfUserName.getText());
-//			model.setPassword(new String(pfPassword1.getPassword()));
-////			model.setIdGroupLevel(cbGroupLevel.getSelectedValue());
-//
-//			BpaUserTableRecord record = new BpaUserTableRecord();
-//			record.setUsername(model.getUserName());
-//			record.setPassword(model.getPassword());
-//			record.setGroup(model.getIdGroupLevel());
-//			BpaUserTableDao userDao = new BpaUserTableDao();
-//			userDao.insert(con, record);
-//			JOptionPane.showMessageDialog(null, "User Berhasil Ditambahkan");
-//		} catch (SQLException e1) {
-//			JOptionPane.showMessageDialog(null, e1.getMessage());
-//		}
-//	}
+	private void deleteAction(ActionEvent e) {
+		if (!isInputValid()){
+			return;
+		}
+
+		try {
+			UserLogic logic = UserLogic.getInstance();
+			String username = tfUserName.getText();
+			logic.deleteUser(username);
+			JOptionPane.showMessageDialog(null, "User baru berhasil dihapus");
+			clearInput();
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Terjadi eror pada koneksi database");
+		}
+	}
 
 	private boolean isInputValid() {
 		if (StringUtil.isEmpty(tfUserName.getText())) {
 			JOptionPane.showMessageDialog(null, "Username Masih Kosong");
 			return false;
 		}
-
-//		if (pfPassword1.getPassword() == null) {
-//			JOptionPane.showMessageDialog(null, "Password Masih Kosong");
-//			return false;
-//		}
-//
-//		if (pfPassword2.getPassword() == null) {
-//			JOptionPane.showMessageDialog(null,
-//					"Konfirmasi Password Masih Kosong");
-//			return false;
-//		}
-
-//		String password1 = new String(pfPassword1.getPassword());
-//		String password2 = new String(pfPassword2.getPassword());
-//		if (!password1.equals(password2)) {
-//			JOptionPane.showMessageDialog(null,
-//					"Konfirmasi Password Tidak Sama");
-//			return false;
-//		}
-//
-//		if (cbGroupLevel.getSelectedIndex() == -1) {
-//			JOptionPane.showMessageDialog(null, "Group Level Belum Terpilih");
-//			return false;
-//		}
-
 		return true;
+	}
+	
+	private void showSelectUsernameDialog(){
+		selectedUsername =  (String)JOptionPane.showInputDialog(this, "Pilih Username", "Pilihan Username", JOptionPane.QUESTION_MESSAGE, null, usernameData, "");
+		if(selectedUsername != null){
+			try {
+				Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+				BpaUserTableDao dao = new BpaUserTableDao();
+				BpaUserSrcCond cond = new BpaUserSrcCond();
+				cond.setUsername(selectedUsername);
+				List list = dao.executeQuery(con, cond);
+				BpaUserTableRecord rec = (BpaUserTableRecord) list.get(0);
 
+				tfUserName.setText(rec.getUsername());
+			} catch (SQLException e) {
+
+			}
+
+		}
+	}
+
+	private void clearInput(){
+		tfUserName.setText("");
 	}
 }

@@ -48,11 +48,11 @@ public class UbahUserView extends JInternalFrame {
 	private Panel panel_2;
 	private PComboBoxLoad cbGroupLevel;
 	private String selectedUsername;
-	
+
 	private HashMap<String, String> userGroupMap;
 	private String[] userGroupId;
 	private String[] userGroupName;
-	
+
 	String[] usernameData;
 
 	/**
@@ -95,7 +95,7 @@ public class UbahUserView extends JInternalFrame {
 		userGroupMap = getUserGroupMap(userGroupList);
 		userGroupId = getUserGroupId(userGroupList);
 		userGroupName = getUserGroupName(userGroupList);
-		
+
 		usernameData = OnMemData.getInstance().getUsernameData();
 
 		getContentPane().setLayout(null);
@@ -164,7 +164,7 @@ public class UbahUserView extends JInternalFrame {
 		cbGroupLevel.setFont(new Font("Arial", Font.BOLD, 15));
 		cbGroupLevel.setBounds(171, 108, 180, 25);
 		panel.add(cbGroupLevel);
-		
+
 		btFind = new JButton("Cari");
 		btFind.setIcon(new ImageIcon(UbahUserView.class.getResource("/net/plaut/bprtab/resources/Cari.png")));
 		btFind.addActionListener(new ActionListener() {
@@ -191,7 +191,7 @@ public class UbahUserView extends JInternalFrame {
 				dispose();
 			}
 		});
-		
+
 		btFind.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showSelectUsernameDialog();
@@ -203,7 +203,7 @@ public class UbahUserView extends JInternalFrame {
 		if (!isInputValid()){
 			return;
 		}
-			
+
 		try {
 			UserLogic logic = UserLogic.getInstance();
 			UpdateUserDto dto = new UpdateUserDto();
@@ -212,7 +212,7 @@ public class UbahUserView extends JInternalFrame {
 			dto.setPassword(new String(pfPassword1.getPassword()));
 			dto.setGroupLevelId((String) cbGroupLevel.getSelectedValue());
 			logic.updateUser(dto);
-			JOptionPane.showMessageDialog(null, "User baru berhasil ditambahkan");
+			JOptionPane.showMessageDialog(null, "User baru berhasil diubah");
 			clearInput();
 		} catch (SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Terjadi eror pada koneksi database");
@@ -252,7 +252,7 @@ public class UbahUserView extends JInternalFrame {
 		return true;
 
 	}
-	
+
 	private void showSelectUsernameDialog(){
 		selectedUsername =  (String)JOptionPane.showInputDialog(this, "Pilih Username", "Pilihan Username", JOptionPane.QUESTION_MESSAGE, null, usernameData, "");
 		if(selectedUsername != null){
@@ -263,36 +263,36 @@ public class UbahUserView extends JInternalFrame {
 				cond.setUsername(selectedUsername);
 				List list = dao.executeQuery(con, cond);
 				BpaUserTableRecord rec = (BpaUserTableRecord) list.get(0);
-				
+
 				tfUserName.setText(rec.getUsername());
 				String groupLevel = userGroupMap.get(rec.getGroupId());
 				cbGroupLevel.setSelectedItem(groupLevel);
 			} catch (SQLException e) {
-				
+
 			}
-			
+
 		}
 	}
-	
+
 	private void clearInput(){
 		tfUserName.setText("");
 		pfPassword1.setText("");
 		pfPassword2.setText("");
 		cbGroupLevel.setSelectedIndex(-1);
 	}
-	
+
 	private HashMap<String, String> getUserGroupMap(ArrayList<BpaUserGroupTableRecord> userGroupList){
 		HashMap<String, String> result = new HashMap<String, String>();
 		if(userGroupList == null || userGroupList.isEmpty()){
 			return result;
 		}
-		
+
 		for(BpaUserGroupTableRecord rec:userGroupList){
 			result.put(rec.getId(), rec.getGroupName());
 		}
 		return result;
 	}
-	
+
 	private String[] getUserGroupId(ArrayList<BpaUserGroupTableRecord> userGroupList){
 		if(userGroupList == null || userGroupList.isEmpty()){
 			return null;
@@ -304,7 +304,7 @@ public class UbahUserView extends JInternalFrame {
 		}
 		return result;
 	}
-	
+
 	private String[] getUserGroupName(ArrayList<BpaUserGroupTableRecord> userGroupList){
 		if(userGroupList == null || userGroupList.isEmpty()){
 			return null;
