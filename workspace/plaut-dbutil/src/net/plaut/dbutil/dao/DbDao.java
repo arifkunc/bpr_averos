@@ -28,6 +28,10 @@ public abstract class DbDao<R extends DbRecord> {
 		return result;
 	}
 	
+	public ArrayList<R> executeQuery(Connection con) throws SQLException{
+		return executeQuery(con, null);
+	}
+	
 	protected abstract SqlCondition createSelectSQLCondition(SearchCondition searchCondition);
 	
 	protected abstract R getRecordFromResultSet(ResultSet rs) throws SQLException;

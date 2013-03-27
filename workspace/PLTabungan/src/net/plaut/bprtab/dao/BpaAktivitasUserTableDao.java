@@ -23,10 +23,11 @@ public class BpaAktivitasUserTableDao extends TableDao<BpaAktivitasUserTableReco
 	protected SqlCondition createSelectSQLCondition(SearchCondition searchCondition) {
 		BpaAktivitasUserSrcCond cond = (BpaAktivitasUserSrcCond) searchCondition;
 		String selectString = "SELECT * FROM "+ getTableName();
-		String whereString="";
-		
-		StringBuilder whereStringBuilder = new StringBuilder();
 		ArrayList param = new ArrayList();
+		
+		String whereString="";
+		StringBuilder whereStringBuilder = new StringBuilder();
+		
 
 		if(cond.getId() != null){
 			if(whereStringBuilder.length() > 0){
