@@ -181,17 +181,8 @@ public class BpaTransaksiTableDao extends TableDao<BpaTransaksiTableRecord> {
 	}
 
 	@Override
-	protected BpaTransaksiTableRecord setRecord(ResultSet rs) throws SQLException {
-		BpaTransaksiTableRecord record = new BpaTransaksiTableRecord();
-		record.setId(rs.getInt("ID"));
-		record.setKodeTransaksi(rs.getString("KODE_TRANSAKSI"));
-		record.setTglTransaksi(rs.getDate("TANGGAL_TRANSAKSI"));
-		record.setNoRekening(rs.getString("NO_REKENING"));
-		record.setNominal(rs.getDouble("NOMINAL"));
-		record.setSaldo(rs.getDouble("SALDO"));
-		record.setUsername(rs.getString("USERNAME"));
-
-		return record;
+	protected BpaTransaksiTableRecord createRecord() {
+		return new BpaTransaksiTableRecord();
 	}
 	
 }

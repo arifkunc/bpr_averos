@@ -149,13 +149,8 @@ public class BpaUserTableDao extends TableDao<BpaUserTableRecord>{
 	}
 
 	@Override
-	protected BpaUserTableRecord setRecord(ResultSet rs) throws SQLException{
-		BpaUserTableRecord record = new BpaUserTableRecord();
-		record.setUsername(rs.getString("USERNAME"));
-		record.setPassword(rs.getString("PASSWORD"));
-		record.setGroupId(rs.getString("GROUP_ID"));
-
-		return record;
+	protected BpaUserTableRecord createRecord() {
+		return new BpaUserTableRecord();
 	}
 
 }

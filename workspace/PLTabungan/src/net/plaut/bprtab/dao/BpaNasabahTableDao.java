@@ -231,21 +231,8 @@ public class BpaNasabahTableDao extends TableDao<BpaNasabahTableRecord> {
 	}
 
 	@Override
-	protected BpaNasabahTableRecord setRecord(ResultSet rs) throws SQLException {
-		BpaNasabahTableRecord record = new BpaNasabahTableRecord();
-		record.setNoRekening(rs.getString("NO_REKENING"));
-		record.setNamaLengkap(rs.getString("NAMA_LENGKAP"));
-		record.setNis(rs.getString("NIS"));
-		record.setKelas(rs.getString("KELAS"));
-		record.setGender(rs.getString("GENDER"));
-		record.setAlamat(rs.getString("ALAMAT"));
-		record.setNamaOrangTua(rs.getString("NAMA_ORANGTUA"));
-		record.setNoKontak(rs.getString("TELEPON"));
-		record.setSaldo(rs.getDouble("SALDO"));
-		record.setTglDaftar(rs.getDate("TGL_DAFTAR"));
-		record.setKet(rs.getString("KET"));
-
-		return record;
+	protected BpaNasabahTableRecord createRecord() {
+		return new BpaNasabahTableRecord();
 	}
 	
 }

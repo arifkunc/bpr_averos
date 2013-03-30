@@ -1,37 +1,47 @@
 package net.plaut.bprtab.dao;
 
 import java.sql.Time;
+import java.sql.Types;
 
 import net.plaut.dbutil.dao.TableRecord;
+import net.plaut.dbutil.object.DbFieldAttribute;
 
 public class BpaAktivitasUserTableRecord extends TableRecord{
-	private Integer id;
-	private Time waktu;
-	private String username;
-	private String aktivitas;
+
+	public static DbFieldAttribute[] fieldAttributeArray = 
+	{
+		new DbFieldAttribute(1, "ID", true, Types.INTEGER),
+		new DbFieldAttribute(2, "WAKTU", false, Types.TIME),
+		new DbFieldAttribute(3, "USERNAME", false, Types.VARCHAR),
+		new DbFieldAttribute(4, "AKTIVITAS", false, Types.VARCHAR)
+	};
+	
+	public BpaAktivitasUserTableRecord(){
+		super(BpaAktivitasUserTableRecord.fieldAttributeArray);
+	}
 	
 	public Integer getId() {
-		return id;
+		return (Integer) getValue("ID");
 	}
 	public void setId(Integer id) {
-		this.id = id;
+		setValue("ID", id);
 	}
 	public Time getWaktu() {
-		return waktu;
+		return (Time) getValue("WAKTU");
 	}
-	public void setWaktu(Time waktu) {
-		this.waktu = waktu;
+	public void setWaktu(Time time) {
+		setValue("WAKTU", time);
 	}
 	public String getUsername() {
-		return username;
+		return (String) getValue("USERNAME");
 	}
 	public void setUsername(String username) {
-		this.username = username;
+		setValue("USERNAME", username);
 	}
 	public String getAktivitas() {
-		return aktivitas;
+		return (String) getValue("AKTIVITAS");
 	}
 	public void setAktivitas(String aktivitas) {
-		this.aktivitas = aktivitas;
+		setValue("AKTIVITAS", aktivitas);
 	}
 }

@@ -29,14 +29,7 @@ public class DbRecord {
 		if(fieldData == null){
 			return;
 		}
-		
 		fieldData.setValue(value);
-		if(value == null){
-			fieldData.setAssigned(false);
-		} else {
-			fieldData.setAssigned(true);
-		}
-		fieldData.setModified(true);
 	}
 	
 	protected Object getValue(String columnName){

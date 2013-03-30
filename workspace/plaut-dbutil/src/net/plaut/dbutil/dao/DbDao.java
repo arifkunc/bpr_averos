@@ -9,16 +9,18 @@ import java.util.ArrayList;
 
 import net.plaut.dbutil.object.SearchCondition;
 import net.plaut.dbutil.object.SqlCondition;
+import net.plaut.dbutil.util.DbTypeMapper;
 
 public abstract class DbDao<R extends DbRecord> {
 	
-	public ArrayList<R> executeQuery(Connection con, SearchCondition searchCondition) throws SQLException{
+	public ArrayList executeQuery(Connection con, SearchCondition searchCondition) throws SQLException{
 		SqlCondition sqlCondition = createSelectSQLCondition(searchCondition);
 		PreparedStatement pStatement = con.prepareStatement(sqlCondition.getSqlString());
 		bindPreparedStatementParameters(pStatement, sqlCondition.getParameters());
 		ResultSet rs = pStatement.executeQuery();
 		ResultSetMetaData rsMetaData = rs.getMetaData();
 		ArrayList<R> result = new ArrayList<R>();
+		
 		while(rs.next()){
 			R rec = this.createRecord();
 			setRecord(rec, rs, rsMetaData);
@@ -40,8 +42,11 @@ public abstract class DbDao<R extends DbRecord> {
 	protected void setRecord(R rec, ResultSet rs, ResultSetMetaData rsMetaData) throws SQLException{
 		int colNum = rsMetaData.getColumnCount();
 		for(int i=1; i<=colNum; i++){
+			Object value = null;
 			String columnLabel = rsMetaData.getColumnLabel(i);
-			rec.setValue(columnLabel, rs.getObject(columnLabel));
+			int type = rsMetaData.getColumnType(i);
+			value = DbTypeMapper.getJavaObject(rs, columnLabel, type);
+			rec.setValue(columnLabel, value);
 		}
 	}
 	

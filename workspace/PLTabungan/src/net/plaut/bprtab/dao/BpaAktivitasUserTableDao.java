@@ -157,13 +157,7 @@ public class BpaAktivitasUserTableDao extends TableDao<BpaAktivitasUserTableReco
 	}
 
 	@Override
-	protected BpaAktivitasUserTableRecord setRecord(ResultSet rs) throws SQLException {
-		BpaAktivitasUserTableRecord record = new BpaAktivitasUserTableRecord();
-		record.setId(new Integer(rs.getInt("ID")));
-		record.setWaktu(rs.getTime("WAKTU"));
-		record.setUsername(rs.getString("USERNAME"));
-		record.setAktivitas(rs.getString("AKTIVITAS"));
-
-		return record;
+	protected BpaAktivitasUserTableRecord createRecord() {
+		return new BpaAktivitasUserTableRecord();
 	}
 }
