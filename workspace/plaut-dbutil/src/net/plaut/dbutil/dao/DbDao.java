@@ -3,6 +3,7 @@ package net.plaut.dbutil.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -16,10 +17,12 @@ public abstract class DbDao<R extends DbRecord> {
 		PreparedStatement pStatement = con.prepareStatement(sqlCondition.getSqlString());
 		bindPreparedStatementParameters(pStatement, sqlCondition.getParameters());
 		ResultSet rs = pStatement.executeQuery();
+		ResultSetMetaData rsMetaData = rs.getMetaData();
 		ArrayList<R> result = new ArrayList<R>();
 		while(rs.next()){
-			R record = getRecordFromResultSet(rs);
-			result.add(record);
+			R rec = this.createRecord();
+			setRecord(rec, rs, rsMetaData);
+			result.add(rec);
 		}
 
 		rs.close();
@@ -34,7 +37,15 @@ public abstract class DbDao<R extends DbRecord> {
 	
 	protected abstract SqlCondition createSelectSQLCondition(SearchCondition searchCondition);
 	
-	protected abstract R getRecordFromResultSet(ResultSet rs) throws SQLException;
+	protected void setRecord(R rec, ResultSet rs, ResultSetMetaData rsMetaData) throws SQLException{
+		int colNum = rsMetaData.getColumnCount();
+		for(int i=1; i<=colNum; i++){
+			String columnLabel = rsMetaData.getColumnLabel(i);
+			rec.setValue(columnLabel, rs.getObject(columnLabel));
+		}
+	}
+	
+	protected abstract R createRecord();
 	
 	protected void bindPreparedStatementParameters(PreparedStatement pStatement, Object[] param) throws SQLException{
 		if(param == null || param.length == 0)

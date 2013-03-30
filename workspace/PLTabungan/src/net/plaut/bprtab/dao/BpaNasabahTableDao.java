@@ -231,7 +231,7 @@ public class BpaNasabahTableDao extends TableDao<BpaNasabahTableRecord> {
 	}
 
 	@Override
-	protected BpaNasabahTableRecord getRecordFromResultSet(ResultSet rs) throws SQLException {
+	protected BpaNasabahTableRecord setRecord(ResultSet rs) throws SQLException {
 		BpaNasabahTableRecord record = new BpaNasabahTableRecord();
 		record.setNoRekening(rs.getString("NO_REKENING"));
 		record.setNamaLengkap(rs.getString("NAMA_LENGKAP"));

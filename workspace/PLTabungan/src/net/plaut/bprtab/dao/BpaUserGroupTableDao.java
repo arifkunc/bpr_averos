@@ -136,7 +136,7 @@ public class BpaUserGroupTableDao extends TableDao<BpaUserGroupTableRecord> {
 	}
 
 	@Override
-	protected BpaUserGroupTableRecord getRecordFromResultSet(ResultSet rs) throws SQLException {
+	protected BpaUserGroupTableRecord setRecord(ResultSet rs) throws SQLException {
 		BpaUserGroupTableRecord record = new BpaUserGroupTableRecord();
 		record.setId(rs.getString("ID"));
 		record.setGroupName(rs.getString("GROUP_NAME"));

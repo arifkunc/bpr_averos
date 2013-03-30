@@ -20,10 +20,15 @@ public class BpaUserTableDao extends TableDao<BpaUserTableRecord>{
 	protected SqlCondition createSelectSQLCondition(SearchCondition searchCondition) {
 		BpaUserSrcCond cond = (BpaUserSrcCond) searchCondition;
 		String selectString = "SELECT * FROM "+ getTableName();
-		String whereString="";
-		
-		StringBuilder whereStringBuilder = new StringBuilder();
 		ArrayList param = new ArrayList();
+		if(cond == null){
+			SqlCondition sqlCond = new SqlCondition(selectString, param.toArray());
+			return sqlCond;
+		}
+		
+		String whereString="";
+		StringBuilder whereStringBuilder = new StringBuilder();
+		
 
 		if(cond.getUsername() != null){
 			if(whereStringBuilder.length() > 0){
@@ -144,7 +149,7 @@ public class BpaUserTableDao extends TableDao<BpaUserTableRecord>{
 	}
 
 	@Override
-	protected BpaUserTableRecord getRecordFromResultSet(ResultSet rs) throws SQLException{
+	protected BpaUserTableRecord setRecord(ResultSet rs) throws SQLException{
 		BpaUserTableRecord record = new BpaUserTableRecord();
 		record.setUsername(rs.getString("USERNAME"));
 		record.setPassword(rs.getString("PASSWORD"));

@@ -144,7 +144,7 @@ public class BpaJenisTransaksiTableDao extends TableDao<BpaJenisTransaksiTableRe
 	}
 
 	@Override
-	protected BpaJenisTransaksiTableRecord getRecordFromResultSet(ResultSet rs) throws SQLException {
+	protected BpaJenisTransaksiTableRecord setRecord(ResultSet rs) throws SQLException {
 		BpaJenisTransaksiTableRecord record = new BpaJenisTransaksiTableRecord();
 		record.setTransactionCd(rs.getString("KODE_TRANSAKSI"));
 		record.setTransactionName(rs.getString("NAMA_TRANSAKSI"));

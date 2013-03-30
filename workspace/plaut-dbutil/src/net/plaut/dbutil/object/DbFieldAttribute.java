@@ -3,17 +3,14 @@ package net.plaut.dbutil.object;
 public class DbFieldAttribute {
 	private int position;
 	private String name;
+	private int type;
 	private boolean isPrimaryKey;
-	private Class<?> classType;
 	
-	
-	public DbFieldAttribute(int position, String name, boolean isPrimaryKey,
-			Class<?> classType) {
-		super();
+	public DbFieldAttribute(int position, String name, boolean isPrimaryKey, int type) {
 		this.position = position;
 		this.name = name;
 		this.isPrimaryKey = isPrimaryKey;
-		this.classType = classType;
+		this.type = type;
 	}
 	
 	public int getPosition() {
@@ -28,18 +25,17 @@ public class DbFieldAttribute {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
 	public boolean isPrimaryKey() {
 		return isPrimaryKey;
 	}
 	public void setPrimaryKey(boolean isPrimaryKey) {
 		this.isPrimaryKey = isPrimaryKey;
 	}
-	public Class<?> getClassType() {
-		return classType;
-	}
-	public void setClassType(Class<?> classType) {
-		this.classType = classType;
-	}
-	
-	
+
 }
