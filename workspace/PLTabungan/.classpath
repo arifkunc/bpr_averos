@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/jcalendar-1.3.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plaut-common-util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plaut-component"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PLTabungan-dao"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

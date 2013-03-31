@@ -1,20 +1,14 @@
 package net.plaut.bprtab;
 
 import java.awt.EventQueue;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import net.plaut.bprtab.dao.BpaUserTableDao;
-import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.komp.view.MainFrame;
 import net.plaut.bprtab.util.LoginInformation;
 import net.plaut.bprtab.util.OnMemData;
 import net.plaut.bprtab.util.SystemInformation;
-import net.plaut.dbutil.db.DbConnection;
 
 public class ApplicationAveros {
 	
