@@ -534,15 +534,15 @@ public class MainFrame extends JFrame {
 	private void showLogoutView(ActionEvent e) {
 		LoginInformation lInfo = LoginInformation.getInstance();
 		lInfo.resetLoginInformation();
-//		JOptionPane.showMessageDialog(this, "Terima kasih. \n Anda Telah Logout.", "Logout", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Terima kasih. \n Anda Telah Logout.", "Logout", JOptionPane.INFORMATION_MESSAGE);
 		activateButton(lInfo.getUserGroup());
 		switchPanelCard(lInfo.getUserGroup());
 		
-		LogoutView logoutView = new LogoutView();
-		mainDesktopPane.add(logoutView);
-		Dimension desktopSize = mainDesktopPane.getSize();
-        Dimension childSize = logoutView.getSize();
-        logoutView.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
+		// LogoutView logoutView = new LogoutView();
+		// mainDesktopPane.add(logoutView);
+		// Dimension desktopSize = mainDesktopPane.getSize();
+        // Dimension childSize = logoutView.getSize();
+        // logoutView.setLocation((desktopSize.width - childSize.width)/2, (desktopSize.height - childSize.height)/2);
 		
 
 		

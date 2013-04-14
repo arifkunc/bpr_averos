@@ -8,7 +8,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import net.plaut.bprtab.komp.view.MainFrame;
 import net.plaut.bprtab.util.LoginInformation;
 import net.plaut.bprtab.util.OnMemData;
-import net.plaut.bprtab.util.SystemInformation;
 
 public class ApplicationAveros {
 	
@@ -38,10 +37,6 @@ public class ApplicationAveros {
 	
 	public void initOnMemData(){
 		OnMemData onMemData = OnMemData.getInstance();
-		
-		// init username data
-		String[] usernameData = SystemInformation.createUsernameData();
-		onMemData.setUsernameData(usernameData);
 	}
 	
 	

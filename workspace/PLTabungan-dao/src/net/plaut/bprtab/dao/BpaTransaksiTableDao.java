@@ -1,11 +1,8 @@
 package net.plaut.bprtab.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import net.plaut.bprtab.dao.condition.BpaTransaksiSrcCond;
-import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.dbutil.dao.TableDao;
 import net.plaut.dbutil.object.SearchCondition;
 import net.plaut.dbutil.object.SqlCondition;

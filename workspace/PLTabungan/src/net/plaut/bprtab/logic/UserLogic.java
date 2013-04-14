@@ -9,8 +9,7 @@ import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.object.AddUserDto;
 import net.plaut.bprtab.object.UpdateUserDto;
-import net.plaut.bprtab.util.SystemInformation;
-import net.plaut.dbutil.db.DbConnection;
+import net.plaut.bprtab.util.DbCommand;
 
 public class UserLogic {
 
@@ -27,7 +26,7 @@ public class UserLogic {
 	}
 
 	public void addUser(AddUserDto dto) throws SQLException{
-		Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+		Connection con = DbCommand.getConnection();
 
 		BpaUserTableRecord record = new BpaUserTableRecord();
 		record.setUsername(dto.getUsername());
@@ -39,7 +38,7 @@ public class UserLogic {
 	}
 	
 	public void updateUser(UpdateUserDto dto) throws SQLException{
-		Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+		Connection con = DbCommand.getConnection();
 
 		BpaUserTableRecord record = new BpaUserTableRecord();
 		record.setUsername(dto.getUsername());
@@ -53,7 +52,7 @@ public class UserLogic {
 	}
 	
 	public void deleteUser(String username) throws SQLException{
-		Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+		Connection con = DbCommand.getConnection();
 
 		BpaUserTableDao userDao = new BpaUserTableDao();
 		BpaUserSrcCond cond = new BpaUserSrcCond();
@@ -62,11 +61,11 @@ public class UserLogic {
 		con.close();
 	}
 
-	public boolean checkUserExist(AddUserDto dto) throws SQLException{
-		Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+	public boolean checkUserExist(String username) throws SQLException{
+		Connection con = DbCommand.getConnection();
 		BpaUserTableDao userDao = new BpaUserTableDao();
 		BpaUserSrcCond cond = new BpaUserSrcCond();
-		cond.setUsername(dto.getUsername());
+		cond.setUsername(username);
 		List list = userDao.executeQuery(con, cond);
 		if(list.isEmpty()){
 			return false;

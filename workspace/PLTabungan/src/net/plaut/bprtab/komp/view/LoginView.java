@@ -1,7 +1,9 @@
 package net.plaut.bprtab.komp.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Panel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import net.miginfocom.swing.MigLayout;
 import net.plaut.bprtab.dao.BpaUserGroupTableDao;
 import net.plaut.bprtab.dao.BpaUserGroupTableRecord;
 import net.plaut.bprtab.dao.BpaUserTableDao;
@@ -26,12 +27,11 @@ import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserGroupSrcCond;
 import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.komp.model.LoginModel;
+import net.plaut.bprtab.util.DbCommand;
 import net.plaut.bprtab.util.LoginInformation;
 import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.ImageIconUtil;
 import net.plaut.dbutil.db.DbConnection;
-import java.awt.Color;
-import java.awt.Panel;
 
 public class LoginView extends JInternalFrame {
 	private JButton btOK;
@@ -47,9 +47,7 @@ public class LoginView extends JInternalFrame {
 	 */
 	public LoginView() {
 		getContentPane().setBackground(new Color(255, 250, 205));
-		setFrameIcon(new ImageIcon(
-				SetorTabunganView.class
-				.getResource("/net/plaut/bprtab/resources/Unlock.png")));
+		setFrameIcon(new ImageIcon(SetorTabunganView.class.getResource("/net/plaut/bprtab/resources/Unlock.png")));
 		// super((Frame)rootFrame, modal);
 		setResizable(false);
 		setTitle("Login");
@@ -57,53 +55,52 @@ public class LoginView extends JInternalFrame {
 		setIconifiable(true);
 		setBounds(200, 200, 396, 163);
 		getContentPane().setLayout(null);
-		ImageIcon imc = new ImageIcon(getClass().getResource(
-				"/net/plaut/bprtab/resources/Log.png"));
+		ImageIcon imc = new ImageIcon(getClass().getResource("/net/plaut/bprtab/resources/Log.png"));
 		iconGambar = ImageIconUtil.getThumbnail(imc, 100, 100);
-		
+
 		Panel panel = new Panel();
 		panel.setBackground(new Color(255, 250, 240));
 		panel.setBounds(10, 8, 360, 117);
 		getContentPane().add(panel);
 		panel.setLayout(null);
-		
-				lbGambar = new JLabel();
-				lbGambar.setBounds(8, 6, 100, 100);
-				panel.add(lbGambar);
-				lbGambar.setIcon(iconGambar);
-				
-						JLabel lblUsername = new JLabel("Username");
-						lblUsername.setBounds(113, 8, 84, 18);
-						panel.add(lblUsername);
-						lblUsername.setFont(new Font("Arial", Font.BOLD, 15));
-						
-								JLabel lblPassword = new JLabel("Password");
-								lblPassword.setBounds(113, 40, 81, 18);
-								panel.add(lblPassword);
-								lblPassword.setFont(new Font("Arial", Font.BOLD, 15));
-								
-										tfUserName = new JTextField();
-										tfUserName.setBounds(200, 8, 150, 24);
-										panel.add(tfUserName);
-										tfUserName.setFont(new Font("Arial", Font.PLAIN, 15));
-										tfUserName.setColumns(10);
-										
-												pfPassword = new JPasswordField();
-												pfPassword.setBounds(200, 40, 150, 24);
-												panel.add(pfPassword);
-												pfPassword.setFont(new Font("Arial", Font.PLAIN, 15));
-												
-														btOK = new JButton("Login");
-														btOK.setIcon(new ImageIcon(LoginView.class.getResource("/net/plaut/bprtab/resources/Submit.png")));
-														btOK.setBounds(160, 72, 94, 30);
-														panel.add(btOK);
-														btOK.setFont(new Font("Arial", Font.BOLD, 15));
-														
-																btCancel = new JButton("Batal");
-																btCancel.setIcon(new ImageIcon(LoginView.class.getResource("/net/plaut/bprtab/resources/Batal.png")));
-																btCancel.setBounds(258, 72, 94, 30);
-																panel.add(btCancel);
-																btCancel.setFont(new Font("Arial", Font.BOLD, 15));
+
+		lbGambar = new JLabel();
+		lbGambar.setBounds(8, 6, 100, 100);
+		panel.add(lbGambar);
+		lbGambar.setIcon(iconGambar);
+
+		JLabel lblUsername = new JLabel("Username");
+		lblUsername.setBounds(113, 8, 84, 18);
+		panel.add(lblUsername);
+		lblUsername.setFont(new Font("Arial", Font.BOLD, 15));
+
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(113, 40, 81, 18);
+		panel.add(lblPassword);
+		lblPassword.setFont(new Font("Arial", Font.BOLD, 15));
+
+		tfUserName = new JTextField();
+		tfUserName.setBounds(200, 8, 150, 24);
+		panel.add(tfUserName);
+		tfUserName.setFont(new Font("Arial", Font.PLAIN, 15));
+		tfUserName.setColumns(10);
+
+		pfPassword = new JPasswordField();
+		pfPassword.setBounds(200, 40, 150, 24);
+		panel.add(pfPassword);
+		pfPassword.setFont(new Font("Arial", Font.PLAIN, 15));
+
+		btOK = new JButton("Login");
+		btOK.setIcon(new ImageIcon(LoginView.class.getResource("/net/plaut/bprtab/resources/Submit.png")));
+		btOK.setBounds(160, 72, 94, 30);
+		panel.add(btOK);
+		btOK.setFont(new Font("Arial", Font.BOLD, 15));
+
+		btCancel = new JButton("Batal");
+		btCancel.setIcon(new ImageIcon(LoginView.class.getResource("/net/plaut/bprtab/resources/Batal.png")));
+		btCancel.setBounds(258, 72, 94, 30);
+		panel.add(btCancel);
+		btCancel.setFont(new Font("Arial", Font.BOLD, 15));
 
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
@@ -148,7 +145,7 @@ public class LoginView extends JInternalFrame {
 
 	private void actionLogin(ActionEvent e) {
 		try {
-			Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+			Connection con = DbCommand.getConnection();
 			model.setUserName(tfUserName.getText());
 			char[] passwordArray = pfPassword.getPassword();
 			model.setPassword(new String(passwordArray));
@@ -164,7 +161,8 @@ public class LoginView extends JInternalFrame {
 				BpaUserGroupTableDao guDao = new BpaUserGroupTableDao();
 				BpaUserGroupSrcCond userGroupCond = new BpaUserGroupSrcCond();
 				userGroupCond.setId(list.get(0).getGroupId());
-				ArrayList<BpaUserGroupTableRecord> ugList = guDao.executeQuery(con, userGroupCond);
+				ArrayList<BpaUserGroupTableRecord> ugList = guDao.executeQuery(
+						con, userGroupCond);
 				String groupId = ugList.get(0).getId();
 				LoginInformation loginInfo = LoginInformation.getInstance();
 				loginInfo.setLogin(true);

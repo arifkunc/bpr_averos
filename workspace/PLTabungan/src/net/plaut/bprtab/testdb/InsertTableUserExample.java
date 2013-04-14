@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import net.plaut.bprtab.constant.DbConstant;
 import net.plaut.bprtab.dao.BpaUserTableDao;
 import net.plaut.bprtab.dao.BpaUserTableRecord;
+import net.plaut.bprtab.util.DbCommand;
 import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.dbutil.db.DbConnection;
 
@@ -16,7 +17,7 @@ public class InsertTableUserExample {
 			/*
 			 Buat objek koneksi database
 			 */
-			con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+			con = DbCommand.getConnection();
 			
 			/*
 			buat objek dao, contohnya BpaUserTableDao. Kelas ini yang bertugas untuk 

@@ -1,11 +1,18 @@
 package net.plaut.dbutil.object;
 
-public class ConnectionInformation {
+public class ConnectInfo {
+	private int databaseType;
 	private String hostname;
 	private String username;
 	private String password;
 	private String dbname;
 	
+	public int getDatabaseType() {
+		return databaseType;
+	}
+	public void setDatabaseType(int databaseType) {
+		this.databaseType = databaseType;
+	}
 	public String getHostname() {
 		return hostname;
 	}

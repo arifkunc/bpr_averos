@@ -8,16 +8,15 @@ import net.plaut.bprtab.dao.BpaUserTableDao;
 import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.common.util.PropertiesReader;
-import net.plaut.dbutil.db.DbConnection;
-import net.plaut.dbutil.object.ConnectionInformation;
+import net.plaut.dbutil.object.ConnectInfo;
 
 public class SystemInformation {
 	
-	private static ConnectionInformation connectInfoInstance = null;
+	private static ConnectInfo connectInfoInstance = null;
 	
-	public static ConnectionInformation getConnectionInformation(){
+	public static ConnectInfo getConnectInfo(){
 		if(connectInfoInstance == null){
-			connectInfoInstance = new ConnectionInformation();
+			connectInfoInstance = new ConnectInfo();
 			PropertiesReader reader = new PropertiesReader("prop/config.properties");
 			connectInfoInstance.setHostname(reader.getProperty("db.hostname"));
 			connectInfoInstance.setUsername(reader.getProperty("db.username"));
@@ -30,7 +29,7 @@ public class SystemInformation {
 	public static String[] createUsernameData(){
 		String[] result = {};
 		try {
-			Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+			Connection con = DbCommand.getConnection();
 			BpaUserTableDao userDao = new BpaUserTableDao();
 			List usernameList = userDao.executeQuery(con, new BpaUserSrcCond());
 			int numOfUsername = usernameList.size();

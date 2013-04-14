@@ -24,6 +24,7 @@ import net.plaut.bprtab.dao.BpaUserGroupTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserGroupSrcCond;
 import net.plaut.bprtab.logic.UserLogic;
 import net.plaut.bprtab.object.AddUserDto;
+import net.plaut.bprtab.util.DbCommand;
 import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.StringUtil;
 import net.plaut.component.PComboBoxLoad;
@@ -76,7 +77,7 @@ public class TambahUserView extends JInternalFrame {
 		Connection con;
 		ArrayList<BpaUserGroupTableRecord> userGroupList;
 		try {
-			con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+			con = DbCommand.getConnection();
 			BpaUserGroupSrcCond cond = new BpaUserGroupSrcCond();
 			userGroupList = guDao.executeQuery(con, cond);
 		} catch (SQLException e) {
@@ -223,7 +224,7 @@ public class TambahUserView extends JInternalFrame {
 		dto.setUsername(tfUserName.getText());
 		UserLogic logic = UserLogic.getInstance();
 		try {
-			if(logic.checkUserExist(dto)){
+			if(logic.checkUserExist(dto.getUsername())){
 				JOptionPane.showMessageDialog(null, "Username telah ada sebelumnya");
 				return false;
 			}

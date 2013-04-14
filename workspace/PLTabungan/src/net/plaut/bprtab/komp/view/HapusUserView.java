@@ -28,6 +28,7 @@ import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.komp.model.TambahUserModel;
 import net.plaut.bprtab.logic.UserLogic;
 import net.plaut.bprtab.object.AddUserDto;
+import net.plaut.bprtab.util.DbCommand;
 import net.plaut.bprtab.util.OnMemData;
 import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.StringUtil;
@@ -78,8 +79,7 @@ public class HapusUserView extends JInternalFrame {
 		BpaUserGroupTableDao guDao = new BpaUserGroupTableDao();
 		Connection con;
 		try {
-			con = DbConnection.createConnection("localhost", "root", "",
-					"bpr_averos");
+			con = DbCommand.getConnection();
 		} catch (SQLException e1) {
 			con = null;
 		}
@@ -91,7 +91,7 @@ public class HapusUserView extends JInternalFrame {
 			userGroupList = new ArrayList<BpaUserGroupTableRecord>();
 		}
 		
-		usernameData = OnMemData.getInstance().getUsernameData();
+		usernameData = SystemInformation.createUsernameData();
 
 		getContentPane().setLayout(null);
 
@@ -202,7 +202,7 @@ public class HapusUserView extends JInternalFrame {
 		selectedUsername =  (String)JOptionPane.showInputDialog(this, "Pilih Username", "Pilihan Username", JOptionPane.QUESTION_MESSAGE, null, usernameData, "");
 		if(selectedUsername != null){
 			try {
-				Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+				Connection con = DbCommand.getConnection();
 				BpaUserTableDao dao = new BpaUserTableDao();
 				BpaUserSrcCond cond = new BpaUserSrcCond();
 				cond.setUsername(selectedUsername);

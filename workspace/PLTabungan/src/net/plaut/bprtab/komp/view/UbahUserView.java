@@ -30,6 +30,7 @@ import net.plaut.bprtab.komp.model.TambahUserModel;
 import net.plaut.bprtab.logic.UserLogic;
 import net.plaut.bprtab.object.AddUserDto;
 import net.plaut.bprtab.object.UpdateUserDto;
+import net.plaut.bprtab.util.DbCommand;
 import net.plaut.bprtab.util.OnMemData;
 import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.StringUtil;
@@ -87,7 +88,7 @@ public class UbahUserView extends JInternalFrame {
 		Connection con;
 		ArrayList<BpaUserGroupTableRecord> userGroupList;
 		try {
-			con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+			con = DbCommand.getConnection();
 			userGroupList = guDao.executeQuery(con, null);
 		} catch (SQLException e) {
 			userGroupList = new ArrayList<BpaUserGroupTableRecord>();
@@ -96,7 +97,7 @@ public class UbahUserView extends JInternalFrame {
 		userGroupId = getUserGroupId(userGroupList);
 		userGroupName = getUserGroupName(userGroupList);
 
-		usernameData = OnMemData.getInstance().getUsernameData();
+		usernameData = SystemInformation.createUsernameData();
 
 		getContentPane().setLayout(null);
 
@@ -257,7 +258,7 @@ public class UbahUserView extends JInternalFrame {
 		selectedUsername =  (String)JOptionPane.showInputDialog(this, "Pilih Username", "Pilihan Username", JOptionPane.QUESTION_MESSAGE, null, usernameData, "");
 		if(selectedUsername != null){
 			try {
-				Connection con = DbConnection.createConnection(SystemInformation.getConnectionInformation());
+				Connection con = DbCommand.getConnection();
 				BpaUserTableDao dao = new BpaUserTableDao();
 				BpaUserSrcCond cond = new BpaUserSrcCond();
 				cond.setUsername(selectedUsername);
