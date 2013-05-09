@@ -1,6 +1,6 @@
 package net.plaut.dbutil.object;
 
 public class DatabaseType {
-	public static int TYPE_MYSQL = 1;
-	public static int TYPE_ORACLE = 2;
+	public static String TYPE_MYSQL = "mysql";
+	public static String TYPE_ORACLE = "oracle";
 }

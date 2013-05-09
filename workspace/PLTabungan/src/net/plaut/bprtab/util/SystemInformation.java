@@ -30,7 +30,7 @@ public class SystemInformation {
 		String[] result = {};
 		try {
 			Connection con = DbCommand.getConnection();
-			BpaUserTableDao userDao = new BpaUserTableDao();
+			BpaUserTableDao userDao = BpaUserTableDao.getInstance();
 			List usernameList = userDao.executeQuery(con, new BpaUserSrcCond());
 			int numOfUsername = usernameList.size();
 			result = new String[numOfUsername];

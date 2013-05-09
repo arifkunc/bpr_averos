@@ -6,18 +6,10 @@ import java.util.List;
 
 import net.plaut.bprtab.dao.BpaNasabahTableDao;
 import net.plaut.bprtab.dao.BpaNasabahTableRecord;
-import net.plaut.bprtab.dao.BpaUserTableDao;
-import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaNasabahSrcCond;
-import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.object.AddNasabahDto;
-import net.plaut.bprtab.object.AddUserDto;
 import net.plaut.bprtab.object.UpdateNasabahDto;
-import net.plaut.bprtab.object.UpdateUserDto;
-import net.plaut.bprtab.util.DbCommand;
-import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.DateUtil;
-import net.plaut.dbutil.db.DbConnection;
 
 public class NasabahLogic {
 
@@ -33,9 +25,7 @@ public class NasabahLogic {
 		return instance;
 	}
 
-	public void addNasabah(AddNasabahDto dto) throws SQLException{
-		Connection con = DbCommand.getConnection();
-
+	public void insertNasabah(Connection con, AddNasabahDto dto) throws SQLException{
 		BpaNasabahTableRecord record = new BpaNasabahTableRecord();
 		record.setNoRekening(dto.getNoRekening());
 		record.setNamaLengkap(dto.getNamaLengkap());
@@ -49,16 +39,13 @@ public class NasabahLogic {
 		record.setTglDaftar(DateUtil.toSqlDate(dto.getTanggalDaftar()));
 		record.setKet(dto.getKet());
 		
-		BpaNasabahTableDao nasabahDao = new BpaNasabahTableDao();
+		BpaNasabahTableDao nasabahDao = BpaNasabahTableDao.getInstance();
 		nasabahDao.insert(con, record);
 		con.close();
 	}
 	
-	public void updateNasabah(UpdateNasabahDto dto) throws SQLException{
-		Connection con = DbCommand.getConnection();
-
+	public void updateNasabah(Connection con, UpdateNasabahDto dto) throws SQLException{
 		BpaNasabahTableRecord record = new BpaNasabahTableRecord();
-		record.setNoRekening(dto.getNoRekening());
 		record.setNamaLengkap(dto.getNamaLengkap());
 		record.setNis(dto.getNis());
 		record.setKelas(dto.getKelas());
@@ -70,26 +57,23 @@ public class NasabahLogic {
 		record.setTglDaftar(DateUtil.toSqlDate(dto.getTanggalDaftar()));
 		record.setKet(dto.getKet());
 		
-		BpaNasabahTableDao nasabahDao = new BpaNasabahTableDao();
+		BpaNasabahTableDao nasabahDao = BpaNasabahTableDao.getInstance();
 		BpaNasabahSrcCond cond = new BpaNasabahSrcCond();
-		cond.setNoRekening(dto.getOldNoRekening());
+		cond.setNoRekening(dto.getRekeningNo());
 		nasabahDao.update(con, record, cond);
 		con.close();
 	}
 	
-	public void deleteUser(String noRekening) throws SQLException{
-		Connection con = DbCommand.getConnection();
-
-		BpaNasabahTableDao nasabahDao = new BpaNasabahTableDao();
+	public void deleteUser(Connection con, String noRekening) throws SQLException{
+		BpaNasabahTableDao nasabahDao = BpaNasabahTableDao.getInstance();
 		BpaNasabahSrcCond cond = new BpaNasabahSrcCond();
 		cond.setNoRekening(noRekening);
 		nasabahDao.delete(con, cond);
 		con.close();
 	}
 
-	public boolean checkNoRekeningExist(String noRekening) throws SQLException{
-		Connection con = DbCommand.getConnection();
-		BpaNasabahTableDao nasabahDao = new BpaNasabahTableDao();
+	public boolean checkRekeningExist(Connection con, String noRekening) throws SQLException{
+		BpaNasabahTableDao nasabahDao = BpaNasabahTableDao.getInstance();
 		BpaNasabahSrcCond cond = new BpaNasabahSrcCond();
 		cond.setNoRekening(noRekening);
 		List list = nasabahDao.executeQuery(con, cond);
@@ -97,5 +81,17 @@ public class NasabahLogic {
 			return false;
 		}
 		return true;
+	}
+	
+	public double getNasabahSaldo(Connection con, String rekeningNo) throws SQLException{
+		if(rekeningNo == null){
+			return 0;
+		}
+		BpaNasabahTableDao dao = BpaNasabahTableDao.getInstance();
+		BpaNasabahSrcCond cond = new BpaNasabahSrcCond();
+		cond.setNoRekening(rekeningNo);
+		List<BpaNasabahTableRecord> recList = dao.executeQuery(con, cond);
+		BpaNasabahTableRecord rec = recList.get(0);
+		return rec.getSaldo().doubleValue();
 	}
 }

@@ -27,6 +27,7 @@ import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserGroupSrcCond;
 import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.komp.model.TambahUserModel;
+import net.plaut.bprtab.logic.UserFacade;
 import net.plaut.bprtab.logic.UserLogic;
 import net.plaut.bprtab.object.AddUserDto;
 import net.plaut.bprtab.object.UpdateUserDto;
@@ -84,7 +85,7 @@ public class UbahUserView extends JInternalFrame {
 		setClosable(true);
 		setIconifiable(true);
 
-		BpaUserGroupTableDao guDao = new BpaUserGroupTableDao();
+		BpaUserGroupTableDao guDao = BpaUserGroupTableDao.getInstance();
 		Connection con;
 		ArrayList<BpaUserGroupTableRecord> userGroupList;
 		try {
@@ -206,13 +207,14 @@ public class UbahUserView extends JInternalFrame {
 		}
 
 		try {
-			UserLogic logic = UserLogic.getInstance();
+			Connection con = DbCommand.getConnection();
+			UserFacade facade = UserFacade.getInstance();
 			UpdateUserDto dto = new UpdateUserDto();
 			dto.setOldUsername(selectedUsername);
 			dto.setUsername(tfUserName.getText());
 			dto.setPassword(new String(pfPassword1.getPassword()));
 			dto.setGroupLevelId((String) cbGroupLevel.getSelectedValue());
-			logic.updateUser(dto);
+			facade.updateUser(con, dto);
 			JOptionPane.showMessageDialog(null, "User baru berhasil diubah");
 			clearInput();
 		} catch (SQLException e1) {
@@ -259,7 +261,7 @@ public class UbahUserView extends JInternalFrame {
 		if(selectedUsername != null){
 			try {
 				Connection con = DbCommand.getConnection();
-				BpaUserTableDao dao = new BpaUserTableDao();
+				BpaUserTableDao dao = BpaUserTableDao.getInstance();
 				BpaUserSrcCond cond = new BpaUserSrcCond();
 				cond.setUsername(selectedUsername);
 				List list = dao.executeQuery(con, cond);

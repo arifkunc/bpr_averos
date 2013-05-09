@@ -1,58 +1,12 @@
-package net.plaut.dbutil.dao;
+package net.plaut.dbutil.util;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Types;
 
-import net.plaut.dbutil.object.SearchCondition;
-import net.plaut.dbutil.object.SqlCondition;
-import net.plaut.dbutil.util.DbTypeMapper;
-
-public abstract class DbDao<R extends DbRecord> {
-	
-	public ArrayList executeQuery(Connection con, SearchCondition searchCondition) throws SQLException{
-		SqlCondition sqlCondition = createSelectSQLCondition(searchCondition);
-		PreparedStatement pStatement = con.prepareStatement(sqlCondition.getSqlString());
-		bindPreparedStatementParameters(pStatement, sqlCondition.getParameters());
-		ResultSet rs = pStatement.executeQuery();
-		ResultSetMetaData rsMetaData = rs.getMetaData();
-		ArrayList<R> result = new ArrayList<R>();
-		
-		while(rs.next()){
-			R rec = this.createRecord();
-			setRecord(rec, rs, rsMetaData);
-			result.add(rec);
-		}
-
-		rs.close();
-		pStatement.close();
-		
-		return result;
-	}
-	
-	public ArrayList<R> executeQuery(Connection con) throws SQLException{
-		return executeQuery(con, null);
-	}
-	
-	protected abstract SqlCondition createSelectSQLCondition(SearchCondition searchCondition);
-	
-	protected void setRecord(R rec, ResultSet rs, ResultSetMetaData rsMetaData) throws SQLException{
-		int colNum = rsMetaData.getColumnCount();
-		for(int i=1; i<=colNum; i++){
-			Object value = null;
-			String columnLabel = rsMetaData.getColumnLabel(i);
-			int type = rsMetaData.getColumnType(i);
-			value = DbTypeMapper.getJavaObject(rs, columnLabel, type);
-			rec.setValue(columnLabel, value);
-		}
-	}
-	
-	protected abstract R createRecord();
-	
-	protected void bindPreparedStatementParameters(PreparedStatement pStatement, Object[] param) throws SQLException{
+public class DbGeneralUtil {
+	public static void bindPreparedStatementParameters(PreparedStatement pStatement, Object[] param) throws SQLException{
 		if(param == null || param.length == 0)
 			return;
 		
@@ -101,5 +55,25 @@ public abstract class DbDao<R extends DbRecord> {
 				pStatement.setObject(i+1, obj);
 			}
 		}
+	}
+	
+	
+	public static Object getJavaObject(ResultSet rs, String columnName, int sqlType) throws SQLException{
+		Object result = null;
+		if(sqlType == Types.INTEGER){
+			result = rs.getInt(columnName);
+		} else if(sqlType == Types.VARCHAR){
+			result = rs.getString(columnName);
+		} else if(sqlType == Types.DATE){
+			result = rs.getDate(columnName);
+		} else if(sqlType == Types.DECIMAL){
+			result = rs.getDouble(columnName);
+		} else if (sqlType == Types.DOUBLE){
+			result = rs.getDouble(columnName);
+		} else {
+			throw new SQLException("No matched SQL Type");
+		}
+		
+		return result;
 	}
 }

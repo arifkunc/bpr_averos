@@ -26,7 +26,7 @@ public class DeleteTableUserExample {
 			Untuk satu tabel di database mempunyai satu kelas dao.
 			Setiap kelas dao seperti BpaUserTableDao merupakan turunan dari kelas TableDao.
 			*/
-			BpaUserTableDao dao = new BpaUserTableDao();
+			BpaUserTableDao dao = BpaUserTableDao.getInstance();
 			
 			/*
 			 buat objek delete condition, contohnya BpaUserDelCond.

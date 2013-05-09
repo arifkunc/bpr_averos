@@ -26,7 +26,7 @@ public class InsertTableUserExample {
 			Untuk satu tabel di database mempunyai satu kelas dao.
 			Setiap kelas dao seperti BpaUserTableDao merupakan turunan dari kelas TableDao.
 			*/
-			BpaUserTableDao dao = new BpaUserTableDao();
+			BpaUserTableDao dao = BpaUserTableDao.getInstance();
 			
 			/*
 			 Kelas record adalah kelas yang menampung data satu record dari database.

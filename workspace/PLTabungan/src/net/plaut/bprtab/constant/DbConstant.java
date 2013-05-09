@@ -9,4 +9,10 @@ public class DbConstant {
 	// for table BPA_JENIS_TRANSAKSI
 	public final static String JENIS_TRANSAKSI_DEBIT = "D";
 	public final static String JENIS_TRANSAKSI_CREDIT = "K";
+	
+	// for table BPA_TRANSAKSI
+	public final static String BPA_TRANSAKSI_KODE_TRANSAKSI_SETOR = "STR";
+	public final static String BPA_TRANSAKSI_KODE_TRANSAKSI_TARIK = "TRK";
+	public final static String BPA_TRANSAKSI_KODE_TRANSAKSI_CANCEL_SETOR = "CST";
+	public final static String BPA_TRANSAKSI_KODE_TRANSAKSI_CANCEL_TARIK = "CTR";
 }

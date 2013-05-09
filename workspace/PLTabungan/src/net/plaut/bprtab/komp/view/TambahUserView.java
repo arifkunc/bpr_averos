@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import net.plaut.bprtab.dao.BpaUserGroupTableDao;
 import net.plaut.bprtab.dao.BpaUserGroupTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserGroupSrcCond;
+import net.plaut.bprtab.logic.UserFacade;
 import net.plaut.bprtab.logic.UserLogic;
 import net.plaut.bprtab.object.AddUserDto;
 import net.plaut.bprtab.util.DbCommand;
@@ -73,7 +74,7 @@ public class TambahUserView extends JInternalFrame {
 		setClosable(true);
 		setIconifiable(true);
 
-		BpaUserGroupTableDao guDao = new BpaUserGroupTableDao();
+		BpaUserGroupTableDao guDao = BpaUserGroupTableDao.getInstance();
 		Connection con;
 		ArrayList<BpaUserGroupTableRecord> userGroupList;
 		try {
@@ -178,12 +179,13 @@ public class TambahUserView extends JInternalFrame {
 		}
 			
 		try {
-			UserLogic logic = UserLogic.getInstance();
+			Connection con = DbCommand.getConnection();
+			UserFacade facade = UserFacade.getInstance();
 			AddUserDto dto = new AddUserDto();
 			dto.setUsername(tfUserName.getText());
 			dto.setPassword(new String(pfPassword1.getPassword()));
 			dto.setGroupLevelId((String) cbGroupLevel.getSelectedValue());
-			logic.addUser(dto);
+			facade.createNewUser(con, dto);
 			JOptionPane.showMessageDialog(null, "User baru berhasil ditambahkan");
 			clearInput();
 		} catch (SQLException e1) {
@@ -220,11 +222,11 @@ public class TambahUserView extends JInternalFrame {
 		}
 		
 		// check for username exists or not
-		AddUserDto dto = new AddUserDto();
-		dto.setUsername(tfUserName.getText());
+		String username = tfUserName.getText();
 		UserLogic logic = UserLogic.getInstance();
 		try {
-			if(logic.checkUserExist(dto.getUsername())){
+			Connection con = DbCommand.getConnection();
+			if(logic.checkUserExist(con, username)){
 				JOptionPane.showMessageDialog(null, "Username telah ada sebelumnya");
 				return false;
 			}

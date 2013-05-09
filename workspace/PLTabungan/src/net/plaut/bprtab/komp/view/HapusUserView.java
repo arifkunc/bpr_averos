@@ -11,12 +11,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import net.plaut.bprtab.dao.BpaUserGroupTableDao;
@@ -26,21 +25,19 @@ import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserGroupSrcCond;
 import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.komp.model.TambahUserModel;
-import net.plaut.bprtab.logic.UserLogic;
-import net.plaut.bprtab.object.AddUserDto;
+import net.plaut.bprtab.logic.UserFacade;
 import net.plaut.bprtab.util.DbCommand;
-import net.plaut.bprtab.util.OnMemData;
 import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.StringUtil;
-import net.plaut.dbutil.db.DbConnection;
-import javax.swing.ImageIcon;
 
 public class HapusUserView extends JInternalFrame {
+	
+	private static final long serialVersionUID = 8874880464202191916L;
+	
 	private JTextField tfUserName;
 	private JButton btSave;
 	private JButton btCancel;
 	JButton btFind;
-	private TambahUserModel model;
 	private Panel panel;
 	private Panel panel_1;
 	private JTextField tfGrupLevel;
@@ -76,7 +73,7 @@ public class HapusUserView extends JInternalFrame {
 		setClosable(true);
 		setIconifiable(true);
 
-		BpaUserGroupTableDao guDao = new BpaUserGroupTableDao();
+		BpaUserGroupTableDao guDao = BpaUserGroupTableDao.getInstance();
 		Connection con;
 		try {
 			con = DbCommand.getConnection();
@@ -150,7 +147,7 @@ public class HapusUserView extends JInternalFrame {
 		tfGrupLevel.setBounds(171, 44, 180, 25);
 		panel.add(tfGrupLevel);
 
-		model = new TambahUserModel();
+		new TambahUserModel();
 		addEvent();
 	}
 
@@ -180,9 +177,10 @@ public class HapusUserView extends JInternalFrame {
 		}
 
 		try {
-			UserLogic logic = UserLogic.getInstance();
+			Connection con = DbCommand.getConnection();
+			UserFacade facade = UserFacade.getInstance();
 			String username = tfUserName.getText();
-			logic.deleteUser(username);
+			facade.deleteUser(con, username);
 			JOptionPane.showMessageDialog(null, "User baru berhasil dihapus");
 			clearInput();
 		} catch (SQLException e1) {
@@ -203,7 +201,7 @@ public class HapusUserView extends JInternalFrame {
 		if(selectedUsername != null){
 			try {
 				Connection con = DbCommand.getConnection();
-				BpaUserTableDao dao = new BpaUserTableDao();
+				BpaUserTableDao dao = BpaUserTableDao.getInstance();
 				BpaUserSrcCond cond = new BpaUserSrcCond();
 				cond.setUsername(selectedUsername);
 				List list = dao.executeQuery(con, cond);

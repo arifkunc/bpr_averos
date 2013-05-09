@@ -27,11 +27,10 @@ import net.plaut.bprtab.dao.BpaUserTableRecord;
 import net.plaut.bprtab.dao.condition.BpaUserGroupSrcCond;
 import net.plaut.bprtab.dao.condition.BpaUserSrcCond;
 import net.plaut.bprtab.komp.model.LoginModel;
+import net.plaut.bprtab.logic.AuthenticatingFacade;
 import net.plaut.bprtab.util.DbCommand;
 import net.plaut.bprtab.util.LoginInformation;
-import net.plaut.bprtab.util.SystemInformation;
 import net.plaut.common.util.ImageIconUtil;
-import net.plaut.dbutil.db.DbConnection;
 
 public class LoginView extends JInternalFrame {
 	private JButton btOK;
@@ -146,36 +145,19 @@ public class LoginView extends JInternalFrame {
 	private void actionLogin(ActionEvent e) {
 		try {
 			Connection con = DbCommand.getConnection();
-			model.setUserName(tfUserName.getText());
+			String username = tfUserName.getText();
 			char[] passwordArray = pfPassword.getPassword();
-			model.setPassword(new String(passwordArray));
-
-			BpaUserTableDao uDao = new BpaUserTableDao();
-			BpaUserSrcCond srcCond = new BpaUserSrcCond();
-			srcCond.setUsername(model.getUserName());
-			srcCond.setPassword(model.getPassword());
-			ArrayList<BpaUserTableRecord> list;
-			list = uDao.executeQuery(con, srcCond);
-			if (list.size() == 1) {
-				// login success
-				BpaUserGroupTableDao guDao = new BpaUserGroupTableDao();
-				BpaUserGroupSrcCond userGroupCond = new BpaUserGroupSrcCond();
-				userGroupCond.setId(list.get(0).getGroupId());
-				ArrayList<BpaUserGroupTableRecord> ugList = guDao.executeQuery(
-						con, userGroupCond);
-				String groupId = ugList.get(0).getId();
-				LoginInformation loginInfo = LoginInformation.getInstance();
-				loginInfo.setLogin(true);
-				loginInfo.setUsername(model.getUserName());
-				loginInfo.setPassword(model.getPassword());
-				loginInfo.setUserGroup(groupId);
-
+			String password = new String(passwordArray);
+			
+			AuthenticatingFacade facade = AuthenticatingFacade.getInstance();
+			int login = facade.login(con, username, password);
+			if(login == 1){
 				MainFrame mf = MainFrame.getInstance();
+				LoginInformation loginInfo = LoginInformation.getInstance();
 				mf.activateButton(loginInfo.getUserGroup());
 				mf.switchPanelCard(loginInfo.getUserGroup());
 				this.dispose();
 			} else {
-				// login failed
 				JOptionPane.showMessageDialog(null, "Login Gagal");
 				model.resetModel();
 				resetField();

@@ -25,45 +25,38 @@ public class UserLogic {
 		return instance;
 	}
 
-	public void addUser(AddUserDto dto) throws SQLException{
-		Connection con = DbCommand.getConnection();
-
+	public void insertUser(Connection con, AddUserDto dto) throws SQLException{
 		BpaUserTableRecord record = new BpaUserTableRecord();
 		record.setUsername(dto.getUsername());
 		record.setPassword(dto.getPassword());
 		record.setGroupId(dto.getGroupLevelId());
-		BpaUserTableDao userDao = new BpaUserTableDao();
+		BpaUserTableDao userDao = BpaUserTableDao.getInstance();
 		userDao.insert(con, record);
 		con.close();
 	}
 	
-	public void updateUser(UpdateUserDto dto) throws SQLException{
-		Connection con = DbCommand.getConnection();
-
+	public void updateUser(Connection con, UpdateUserDto dto) throws SQLException{
 		BpaUserTableRecord record = new BpaUserTableRecord();
 		record.setUsername(dto.getUsername());
 		record.setPassword(dto.getPassword());
 		record.setGroupId(dto.getGroupLevelId());
-		BpaUserTableDao userDao = new BpaUserTableDao();
+		BpaUserTableDao userDao = BpaUserTableDao.getInstance();
 		BpaUserSrcCond cond = new BpaUserSrcCond();
 		cond.setUsername(dto.getOldUsername());
 		userDao.update(con, record, cond);
 		con.close();
 	}
 	
-	public void deleteUser(String username) throws SQLException{
-		Connection con = DbCommand.getConnection();
-
-		BpaUserTableDao userDao = new BpaUserTableDao();
+	public void deleteUser(Connection con, String username) throws SQLException{
+		BpaUserTableDao userDao = BpaUserTableDao.getInstance();
 		BpaUserSrcCond cond = new BpaUserSrcCond();
 		cond.setUsername(username);
 		userDao.delete(con, cond);
 		con.close();
 	}
 
-	public boolean checkUserExist(String username) throws SQLException{
-		Connection con = DbCommand.getConnection();
-		BpaUserTableDao userDao = new BpaUserTableDao();
+	public boolean checkUserExist(Connection con, String username) throws SQLException{
+		BpaUserTableDao userDao = BpaUserTableDao.getInstance();
 		BpaUserSrcCond cond = new BpaUserSrcCond();
 		cond.setUsername(username);
 		List list = userDao.executeQuery(con, cond);
